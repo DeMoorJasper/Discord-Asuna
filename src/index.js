@@ -4,9 +4,7 @@ global.client = new Discord.Client();
 
 let updateGame = () => {
   let Statistics = require("./Utils/Statistics").Statistics;
-  client.user.setGame(`on ${Statistics.getTotalGuilds()} servers`, "https://github.com/DeMoorJasper").then((e) => {
-    console.log(e);
-  });
+  client.user.setGame(`on ${Statistics.getTotalGuilds()} servers`, conf.github);
 };
 
 client.on('ready', () => {

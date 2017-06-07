@@ -2,6 +2,7 @@ const Discord = require("discord.js");
 const ChatHandler = require("../ChatHandler").ChatHandler;
 const Statistics = require("../../Utils/Statistics").Statistics;
 const Time = require("../../Utils/Time").Time;
+const Config = require("../../../config");
 
 let Stats = (msg) => {
     let embed = new Discord.RichEmbed();
@@ -16,7 +17,7 @@ let Stats = (msg) => {
         embed.addField("CHANNELS", Statistics.getTotalChannels(), "true");
         embed.addField("TOTAL USERS", Statistics.getTotalUsers(), "true");
         embed.addField("VOICE CONNECTIONS", Statistics.getVoiceConnections(), "true");
-        embed.addField("GITHUB", "https://github.com/DeMoorJasper", "false");
+        embed.addField("GITHUB", Config.github, "false");
 
         ChatHandler.sendEmbed(msg, "", embed)
     });
