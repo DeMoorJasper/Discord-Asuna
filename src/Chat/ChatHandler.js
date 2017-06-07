@@ -92,7 +92,6 @@ let handleMessage = (msg) => {
         } catch(e) {
             let exCommand = require("./Commands/Help").Help;
             exCommand(msg);
-            //console.log(`[COMMAND] ${command} - ${command.length} not found`);
             console.log(e);
             return;
         }
