@@ -1,10 +1,13 @@
 const prefix = require("../../config").prefix;
+const PermissionsHandler = require("../Permissions/PermissionsHandler").PermissionsHandler;
 
 let checkPersonal = (user, callback) => {
     let channel = user.dmChannel;
     if (!channel) {
         user.createDM().then((dchannel) => {
             callback(dchannel);
+        }).catch((e) => {
+            console.log(e);
         });
         return;
     }
@@ -14,6 +17,8 @@ let checkPersonal = (user, callback) => {
 let sendPersonal = (user, content) => {
     checkPersonal(user, (channel) => {
         channel.send(content);
+    }).catch((e) => {
+        console.log(e);
     });
 };
 
@@ -21,12 +26,13 @@ let sendPersonalEmbed = (user, content, embed) => {
     checkPersonal(user, (channel) => {
         channel.send(content, {
             embed: embed
+        }).catch((e) => {
+            console.log(e);
         });
     });
 };
 
 let checkPermission = (msg, callback) => {
-    let PermissionsHandler = require("../Permissions/PermissionsHandler").PermissionsHandler;
     let perm_send = PermissionsHandler.hasPermission(msg.channel, client.user, PermissionsHandler.permissionFlags.Text.send_messages);
     if (perm_send && (msg.channel.type === "text" || msg.channel.type === "dm")) {
         callback();
@@ -40,29 +46,45 @@ let sendReply = (msg, callback) => {
     checkPermission(msg, () => {
         msg.channel.send(content, {
             reply: msg.author
+        }).catch((e) => {
+            console.log(e);
         });
     });
 };
 
 let sendEmbed = (msg, content, embed) => {
+    let perm_embed = PermissionsHandler.hasPermission(msg.channel, client.user, PermissionsHandler.permissionFlags.Text.embed_links);
+    if (!perm_embed) {
+        return;
+    }
     checkPermission(msg, () => {
         msg.channel.send(content, {
             embed: embed
+        }).catch((e) => {
+            console.log(e);
         });
     });
 };
 
 let sendImage = (msg, content, url) => {
+    let perm_image = PermissionsHandler.hasPermission(msg.channel, client.user, PermissionsHandler.permissionFlags.Text.attach_files);
+    if (!perm_image) {
+        return;
+    }
     checkPermission(msg, () => {
         msg.channel.send(content, {
             file: url
+        }).catch((e) => {
+            console.log(e);
         });
     });
 };
 
 let sendMessage = (msg, content) => {
     checkPermission(msg, () => {
-        msg.channel.send(content);
+        msg.channel.send(content).catch((e) => {
+            console.log(e);
+        });
     });
 };
 

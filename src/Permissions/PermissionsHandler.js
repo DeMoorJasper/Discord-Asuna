@@ -9,7 +9,7 @@ let hasPermission = (channel, member, permission) => {
             if (member.guild === undefined) {
                 member = channel.guild.member(member);
             }
-            return member.highestRole.hasPermission(permission);
+            return channel.permissionsFor(member).has(permission);
         }
     } else {
         return false;
