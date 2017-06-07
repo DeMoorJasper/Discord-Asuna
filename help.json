@@ -1,0 +1,16 @@
+{
+    "help": [
+        {
+            "command": "ping",
+            "description": "Get the average network latency between the bot and discord. (or just play ping-pong)"
+        },
+        {
+            "command": "meme",
+            "description": "Get a random meme, carefully selected by Asuna's personal army of monkeys."
+        },
+        {
+            "command": "stats",
+            "description": "Look at the amazing performance of Asuna printed in numbers."
+        }
+    ]
+}
