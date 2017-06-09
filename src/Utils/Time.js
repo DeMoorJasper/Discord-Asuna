@@ -14,9 +14,14 @@ let timeToString = (time) => {
     return `${time.h}:${time.m}:${time.s}`;
 };
 
+let currTimeSeconds = () => {
+    return Math.floor(Date.now() / 1000);
+};
+
 let Time = {
     secsToTime: secsToTime,
-    timeToString: timeToString
+    timeToString: timeToString,
+    currTimeSeconds: currTimeSeconds
 }
 
 exports.Time = Time;

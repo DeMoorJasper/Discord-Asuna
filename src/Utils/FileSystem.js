@@ -19,7 +19,7 @@ let loadFile = (path, callback) => {
                 return;
             }
             fs.readFile(path, (e, data) => {
-                if (err) {
+                if (e) {
                     callback(e);
                     return;
                 }
@@ -40,9 +40,11 @@ let saveFile = (path, content, callback) => {
                     callback(e);
                     return;
                 }
-                callback();
+                callback("Succesfully saved the file");
             });
         });
+    } else {
+        callback("Invalid path");
     }
 };
 
