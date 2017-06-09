@@ -1,4 +1,6 @@
 let GuildHandler = require("../Guild/GuildHandler").GuildHandler;
+let YoutubeHandler = require("./YoutubeHandler").YoutubeHandler;
+let VoiceHandler = require("./VoiceHandler").VoiceHandler;
 
 let getPlaylist = (guild, callback) => {
     GuildHandler.getGuild(guild, (data) => {
@@ -19,7 +21,7 @@ let savePlaylist = (guild, playlist) => {
     });
 };
 
-let addTrack = (guild, url) => {
+let addTrack = (guild, url, callback) => {
     let track = {url: url};
     getPlaylist(guild, (data) => {
         if (data) {
@@ -29,12 +31,28 @@ let addTrack = (guild, url) => {
             data = [track];
         }
         savePlaylist(guild, data);
+        callback(data);
     });
+};
+
+let play = (data) => {
+    if (data && data.voiceChannel && data.playlist && data.playlist.length > 0) {
+        let ytStream = YoutubeHandler.getAudioStream(data.playlist[0].url);
+        let channel = VoiceHandler.getVoiceChannel(data.voiceChannel);
+        if (channel) {
+            VoiceHandler.joinChannel(channel, (data) => {
+                VoiceHandler.streamAudio(channel, ytStream, () => {
+                    console.log("Hope i be streamin a song by now");
+                });
+            });
+        }
+    }
 };
 
 let Playlist = {
     addTrack: addTrack,
-    getPlaylist: getPlaylist
+    getPlaylist: getPlaylist,
+    play: play
 };
 
 exports.Playlist = Playlist;

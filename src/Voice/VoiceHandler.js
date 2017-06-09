@@ -32,9 +32,18 @@ let streamAudio = (channel, stream, callback) => {
     }
 };
 
+let getVoiceChannel = (channelid) => {
+    let channel = client.channels.find("id", channelid);
+    if (channel && channel.type === "voice") {
+        return channel;
+    }
+    return undefined;
+}
+
 let VoiceHandler = {
     streamAudio: streamAudio,
-    joinChannel: joinChannel
+    joinChannel: joinChannel,
+    getVoiceChannel: getVoiceChannel
 };
 
 exports.VoiceHandler = VoiceHandler;
