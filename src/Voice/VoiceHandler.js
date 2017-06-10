@@ -24,6 +24,8 @@ let streamAudio = (channel, stream, callback, ended) => {
                 const dispatcher = connection.playStream(stream, streamOptions).once('end', () => {
                     dispatcher.stream = undefined;
                     ended();
+                }).catch((e) => {
+                    console.log(e);
                 });
                 callback(dispatcher);
                 return;
