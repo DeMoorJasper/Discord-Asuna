@@ -6,6 +6,12 @@ let joinChannel = (channel, callback) => {
     let canConnect = PermissionsHandler.hasPermission(channel, client.user, PermissionsHandler.permissionFlags.Voice.connect);
     if (canConnect) {
         channel.join().then(connection => {
+            connection.on("error", (e) => {
+                console.log(e);
+            });
+            connection.on("failed", (e) => {
+                console.log(e);
+            })
             callback(connection);
         }).catch((e) => {
             console.log(e);
@@ -21,11 +27,10 @@ let streamAudio = (channel, stream, callback, ended) => {
     if (canStream) {
         joinChannel(channel, (connection) => {
             if (connection != null) {
-                const dispatcher = connection.playStream(stream, streamOptions).once('end', () => {
+                let dispatcher = connection.playStream(stream, streamOptions);
+                dispatcher.once('end', () => {
                     dispatcher.stream = undefined;
                     ended();
-                }).catch((e) => {
-                    console.log(e);
                 });
                 callback(dispatcher);
                 return;

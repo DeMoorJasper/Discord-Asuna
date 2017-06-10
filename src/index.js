@@ -10,21 +10,15 @@ let updateGame = () => {
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.username}!`);
   updateGame();
-}).catch((e) => {
-  console.log(e);
 });
 
 client.on('guildCreate', () => {
   updateGame();
-}).catch((e) => {
-  console.log(e);
 });
 
 client.on('message', msg => {
   let ChatHandler = require("./Chat/ChatHandler").ChatHandler;
   ChatHandler.handleMessage(msg);
-}).catch((e) => {
-  console.log(e);
 });
 
 client.login(conf.discord);
