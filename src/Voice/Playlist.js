@@ -27,7 +27,6 @@ let addTrack = (guild, url, callback) => {
         if (data) {
             data.push(track);
         } else {
-            console.log("playlist is empty.");
             data = [track];
         }
         savePlaylist(guild, data);
@@ -36,15 +35,14 @@ let addTrack = (guild, url, callback) => {
 };
 
 let play = (data, callback) => {
-    let playlist = data.playlist;
-    if (data && data.voiceChannel && playlist && playlist.length > 0) {
-        let ytStream = YoutubeHandler.getAudioStream(playlist[0].url);
+    if (data && data.voiceChannel && data.playlist && data.playlist.length > 0) {
+        let ytStream = YoutubeHandler.getAudioStream(data.playlist[0].url);
         let channel = VoiceHandler.getVoiceChannel(data.voiceChannel);
         if (channel) {
             VoiceHandler.joinChannel(channel, (connection) => {
                 VoiceHandler.streamAudio(channel, ytStream, () => {
-                    callback(`Streaming: ${playlist[0].url}`);
-                    // TODO: Remove track from playlist?
+                    callback(`Streaming: ${data.playlist[0].url}`);
+                    data.playlist.splice(0, 1);
                     data.Save();
                 });
             });
@@ -53,13 +51,31 @@ let play = (data, callback) => {
 };
 
 let clearPlaylist = (data) => {
+    if (data) {
+        data.playlist = undefined;
+        data.Save();
+    }
+};
 
+let stop = (data) => {
+    if (data && data.voiceChannel) {
+        let channel = VoiceHandler.getVoiceChannel(data.voiceChannel);
+        if (channel) {
+            let connection = channel.connection;
+            if (connection) {
+                let dispatcher = connection.dispatcher;
+                if (dispatcher) dispatcher.end();
+            }
+        }
+    }
 };
 
 let Playlist = {
     addTrack: addTrack,
     getPlaylist: getPlaylist,
-    play: play
+    play: play,
+    clearPlaylist: clearPlaylist,
+    stop: stop
 };
 
 exports.Playlist = Playlist;
