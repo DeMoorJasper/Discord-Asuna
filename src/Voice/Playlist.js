@@ -79,7 +79,8 @@ let getDispatcher = (data) => {
 let stop = (data) => {
     let dispatcher = getDispatcher(data);
     if (dispatcher) {
-        return dispatcher.end();
+        dispatcher.end();
+        return "stopped";
     }
     return null;
 };
@@ -87,7 +88,8 @@ let stop = (data) => {
 let pause = (data) => {
     let dispatcher = getDispatcher(data);
     if (dispatcher) {
-        return dispatcher.pause();
+        dispatcher.pause();
+        return "paused";
     }
     return null;
 };
@@ -95,7 +97,8 @@ let pause = (data) => {
 let resume = (data) => {
     let dispatcher = getDispatcher(data);
     if (dispatcher) {
-        return dispatcher.resume();
+        dispatcher.resume();
+        return "resumed";
     }
     return null;
 };
