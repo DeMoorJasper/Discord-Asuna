@@ -34,11 +34,7 @@ let addTrack = (guild, url, callback) => {
     });
 };
 
-let play = (data, callback) => {
-    if (resume(data)) {
-        callback("Resumed audio");
-        return;
-    }
+let playNext = (data, callback) => {
     if (data && data.voiceChannel && data.playlist && data.playlist.length > 0) {
         let ytStream = YoutubeHandler.getAudioStream(data.playlist[0].url);
         let channel = VoiceHandler.getVoiceChannel(data.voiceChannel);
@@ -54,6 +50,18 @@ let play = (data, callback) => {
             });
         }
     }
+}
+
+let play = (data, callback) => {
+    if (resume(data)) {
+        callback("Resumed audio");
+        return;
+    }
+    playNext(data, callback);
+};
+
+let skip = (data, callback) => {
+    playNext(data, callback);
 };
 
 let clearPlaylist = (data) => {
@@ -110,7 +118,8 @@ let Playlist = {
     clearPlaylist: clearPlaylist,
     stop: stop,
     pause: pause,
-    resume: resume
+    resume: resume,
+    skip: skip
 };
 
 exports.Playlist = Playlist;
