@@ -1,16 +1,32 @@
 {
     "help": [
         {
-            "command": "ping",
-            "description": "Get the average network latency between the bot and discord. (or just play ping-pong)"
-        },
-        {
             "command": "meme",
             "description": "Get a random meme, carefully selected by Asuna's personal army of monkeys."
         },
         {
             "command": "stats",
             "description": "Look at the amazing performance of Asuna printed in numbers."
+        },
+        {
+            "command": "request <link>",
+            "description": "Request a song (currently only supports youtube)"
+        },
+        {
+            "command": "play",
+            "description": "Start playing the playlist."
+        },
+        {
+            "command": "pause",
+            "description": "Pause the current stream"
+        },
+        {
+            "command": "stop",
+            "description": "Stop the currently playing track"
+        },
+        {
+            "command": "clear",
+            "description": "Clear the playlist."
         }
     ]
 }

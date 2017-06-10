@@ -16,13 +16,14 @@ let joinChannel = (channel, callback) => {
     }
 };
 
-let streamAudio = (channel, stream, callback) => {
+let streamAudio = (channel, stream, callback, ended) => {
     let canStream = PermissionsHandler.hasPermission(channel, client.user, PermissionsHandler.permissionFlags.Voice.speak);
     if (canStream) {
         joinChannel(channel, (connection) => {
             if (connection != null) {
                 const dispatcher = connection.playStream(stream, streamOptions).once('end', () => {
-                    dispatcher.end();
+                    dispatcher.stream = undefined;
+                    ended();
                 });
                 callback(dispatcher);
                 return;

@@ -35,6 +35,10 @@ let addTrack = (guild, url, callback) => {
 };
 
 let play = (data, callback) => {
+    if (resume(data)) {
+        callback("Resumed audio");
+        return;
+    }
     if (data && data.voiceChannel && data.playlist && data.playlist.length > 0) {
         let ytStream = YoutubeHandler.getAudioStream(data.playlist[0].url);
         let channel = VoiceHandler.getVoiceChannel(data.voiceChannel);
@@ -44,6 +48,8 @@ let play = (data, callback) => {
                     callback(`Streaming: ${data.playlist[0].url}`);
                     data.playlist.splice(0, 1);
                     data.Save();
+                }, () => {
+                    play(data, callback);
                 });
             });
         }
@@ -57,17 +63,41 @@ let clearPlaylist = (data) => {
     }
 };
 
-let stop = (data) => {
+let getDispatcher = (data) => {
     if (data && data.voiceChannel) {
         let channel = VoiceHandler.getVoiceChannel(data.voiceChannel);
         if (channel) {
             let connection = channel.connection;
             if (connection) {
-                let dispatcher = connection.dispatcher;
-                if (dispatcher) dispatcher.end();
+                return connection.dispatcher;
             }
         }
     }
+    return null;
+};
+
+let stop = (data) => {
+    let dispatcher = getDispatcher(data);
+    if (dispatcher) {
+        return dispatcher.end();
+    }
+    return null;
+};
+
+let pause = (data) => {
+    let dispatcher = getDispatcher(data);
+    if (dispatcher) {
+        return dispatcher.pause();
+    }
+    return null;
+};
+
+let resume = (data) => {
+    let dispatcher = getDispatcher(data);
+    if (dispatcher) {
+        return dispatcher.resume();
+    }
+    return null;
 };
 
 let Playlist = {
@@ -75,7 +105,9 @@ let Playlist = {
     getPlaylist: getPlaylist,
     play: play,
     clearPlaylist: clearPlaylist,
-    stop: stop
+    stop: stop,
+    pause: pause,
+    resume: resume
 };
 
 exports.Playlist = Playlist;
