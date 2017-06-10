@@ -4,7 +4,9 @@ let GuildHandler = require("../../Guild/GuildHandler").GuildHandler;
 
 let Play = (msg) => {
     GuildHandler.getGuild(msg.guild.id, (data) => {
-        Playlist.play(data);
+        Playlist.play(data, (playing) => {
+            ChatHandler.sendMessage(msg, playing);
+        });
     });
 };
 

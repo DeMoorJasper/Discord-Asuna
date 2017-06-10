@@ -21,7 +21,9 @@ let streamAudio = (channel, stream, callback) => {
     if (canStream) {
         joinChannel(channel, (connection) => {
             if (connection != null) {
-                const dispatcher = connection.playStream(stream, streamOptions);
+                const dispatcher = connection.playStream(stream, streamOptions).once('end', () => {
+                    dispatcher.end();
+                });
                 callback(dispatcher);
                 return;
             }

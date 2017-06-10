@@ -35,18 +35,25 @@ let addTrack = (guild, url, callback) => {
     });
 };
 
-let play = (data) => {
-    if (data && data.voiceChannel && data.playlist && data.playlist.length > 0) {
-        let ytStream = YoutubeHandler.getAudioStream(data.playlist[0].url);
+let play = (data, callback) => {
+    let playlist = data.playlist;
+    if (data && data.voiceChannel && playlist && playlist.length > 0) {
+        let ytStream = YoutubeHandler.getAudioStream(playlist[0].url);
         let channel = VoiceHandler.getVoiceChannel(data.voiceChannel);
         if (channel) {
-            VoiceHandler.joinChannel(channel, (data) => {
+            VoiceHandler.joinChannel(channel, (connection) => {
                 VoiceHandler.streamAudio(channel, ytStream, () => {
-                    console.log("Hope i be streamin a song by now");
+                    callback(`Streaming: ${playlist[0].url}`);
+                    // TODO: Remove track from playlist?
+                    data.Save();
                 });
             });
         }
     }
+};
+
+let clearPlaylist = (data) => {
+
 };
 
 let Playlist = {

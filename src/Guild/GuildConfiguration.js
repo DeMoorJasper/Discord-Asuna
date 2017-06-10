@@ -4,7 +4,7 @@ const Time = require("../Utils/Time").Time;
 global.guildCache = {};
 
 let cleanCache = () => {
-    Object.keys(guildCache).forEach(function (guildId) {
+    Object.keys(guildCache).forEach((guildId) => {
         let guild = guildCache[guildId];
         if (guild != null && guild != undefined) {
             if (guild.lastUsed + 300 < Time.currTimeSeconds()) {
@@ -15,9 +15,9 @@ let cleanCache = () => {
 };
 
 let loadGuild = (guildId, callback) => {
-    if (guildCache[guildId] !== undefined) {
+    if (guildCache[guildId]) {
         guildCache[guildId].lastUsed = Time.currTimeSeconds();
-        return guildCache[guildId];
+        return callback(guildCache[guildId]);
     }
     if (guildId && callback) {
         let path = `${PATH}${guildId}.json`;
