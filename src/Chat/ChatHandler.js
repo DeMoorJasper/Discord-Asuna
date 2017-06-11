@@ -17,8 +17,6 @@ let checkPersonal = (user, callback) => {
 let sendPersonal = (user, content) => {
     checkPersonal(user, (channel) => {
         channel.send(content);
-    }).catch((e) => {
-        console.log(e);
     });
 };
 
