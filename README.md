@@ -1,5 +1,6 @@
 # Discord-Asuna
-A simple discord bot
+A simple discord bot.
+Music playback, memes and some other commands.
 
 ## config.json
 ```json
