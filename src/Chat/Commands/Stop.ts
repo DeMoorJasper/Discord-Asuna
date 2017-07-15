@@ -15,6 +15,9 @@ export class Stop {
 
     execute(msg) {
         GuildHandler.getGuild(msg.guild.id, (data) => {
+            if (!msg.guild.voiceChannel || !msg.guild.logChannel) {
+                return this.chatHandler.sendMessage(msg, "Please configure voice channel first!");
+            }
             this.playlist.stop(data);
             this.chatHandler.sendMessage(msg, "Song has been stopped.");
         });
