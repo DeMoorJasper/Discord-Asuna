@@ -1,7 +1,7 @@
 import { ChatHandler } from '../ChatHandler';
 import { Playlist } from '../../Voice/Playlist';
 
-export class Play {
+export class Request {
     client: any;
     chatHandler: ChatHandler;
     playlist: Playlist;

@@ -52,6 +52,9 @@ export class PermissionsHandler {
                 return channel.permissionsFor(member).has(permission);
             }
         } else {
+            console.log(channel);
+            console.log(member);
+            console.log(permission);
             return false;
         }
     }

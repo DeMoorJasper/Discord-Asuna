@@ -1,8 +1,11 @@
 const prefix = require("../../config").prefix;
 import { PermissionsHandler } from '../Permissions/PermissionsHandler';
+import { TextUtils } from '../Utils/TextUtils';
+import { Commands } from './commands';
 
 export class ChatHandler {
     client: any;
+    commands: Commands
 
     constructor(client) {
         this.client = client;
@@ -62,7 +65,9 @@ export class ChatHandler {
         let perm_embed = PermissionsHandler.hasPermission(msg.channel, this.client.user, PermissionsHandler.permissionFlags.Text.embed_links);
         
         if (!perm_embed) {
-            return;
+            const message = "Insuficient permissions to send embeds!";
+            this.sendMessage(msg, message);
+            return console.log(message);
         }
 
         this.checkPermission(msg, () => {
@@ -78,7 +83,9 @@ export class ChatHandler {
         let perm_image = PermissionsHandler.hasPermission(msg.channel, this.client.user, PermissionsHandler.permissionFlags.Text.attach_files);
 
         if (!perm_image) {
-            return;
+            const message = "Insuficient permissions to send images!";
+            this.sendMessage(msg, message);
+            return console.log(message);
         }
 
         this.checkPermission(msg, () => {
@@ -91,6 +98,7 @@ export class ChatHandler {
     }
 
     sendMessage(msg, content) {
+        console.log("send message");
         this.checkPermission(msg, () => {
             msg.channel.send(content).catch((e) => {
                 console.log(e);
@@ -110,8 +118,6 @@ export class ChatHandler {
                 return;
             }
 
-            let TextUtils = require("../Utils/TextUtils").TextUtils;
-
             let command = content.toLowerCase();
 
             if (content.indexOf(" ") > 0) {
@@ -120,18 +126,11 @@ export class ChatHandler {
 
             command = TextUtils.capitalize(command);
 
-            try {
-                const loc = `./Commands/${command}`;
-                const commandClass = require(loc);
-                const commandInstance = new commandClass(this.client);
-                commandInstance.execute(msg);
-            } catch(e) {
-                const commandClass = require('./Commands/Help');
-                const commandInstance = new commandClass(this.client);
-                commandInstance.execute(msg);
-                console.log(e);
-                return;
+            // Create commands stack if not exists yet
+            if (!this.commands) {
+                this.commands = new Commands(this.client);
             }
+            this.commands.executeCommand(command, msg);
         }
     }
 }

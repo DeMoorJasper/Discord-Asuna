@@ -2,7 +2,7 @@ import { ChatHandler } from '../ChatHandler';
 import { Playlist } from '../../Voice/Playlist';
 import { GuildHandler } from '../../Guild/GuildHandler';
 
-export class Play {
+export class Skip {
     client: any;
     chatHandler: ChatHandler;
     playlist: Playlist;
