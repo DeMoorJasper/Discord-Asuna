@@ -4,22 +4,19 @@
   "description": "A discord bot made with discord.js",
   "main": "./src/index.js",
   "scripts": {
-    "build": "babel src -d lib",
-    "start": "babel src -d lib && node ./lib/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "ts-node ./src/index.ts"
   },
   "author": "Jasper De Moor",
   "license": "ISC",
-  "devDependencies": {
-    "babel-cli": "^6.24.1",
-    "babel-preset-env": "^1.5.1"
-  },
   "dependencies": {
+    "@types/node": "^8.0.13",
     "discord.js": "^11.1.0",
     "erlpack": "^0.1.2",
     "node-opus": "^0.2.6",
     "pidusage": "^1.1.5",
     "sodium": "^2.0.1",
+    "ts-node": "^3.2.0",
+    "typescript": "^2.4.1",
     "uws": "^0.14.5",
     "ytdl-core": "^0.14.2"
   },
