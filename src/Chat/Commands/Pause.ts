@@ -15,6 +15,9 @@ export class Pause {
 
     execute(msg) {
         GuildHandler.getGuild(msg.guild.id, (data) => {
+            if (!data.voiceChannel || !data.logChannel) {
+                return this.chatHandler.sendMessage(msg, "Please configure voice channel first!");
+            }
             if (this.playlist.pause(data)) {
                 return this.chatHandler.sendMessage(msg, "Track has been paused.");
             }

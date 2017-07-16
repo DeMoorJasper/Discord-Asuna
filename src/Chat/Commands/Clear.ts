@@ -15,6 +15,9 @@ export class Clear {
 
     execute(msg) {
         GuildHandler.getGuild(msg.guild.id, (data) => {
+            if (!data.voiceChannel || !data.logChannel) {
+                return this.chatHandler.sendMessage(msg, "Please configure voice channel first!");
+            }
             this.playlist.clearPlaylist(data);
             this.chatHandler.sendMessage(msg, "Playlist cleared, use the stop command to stop the current song.");
         });

@@ -15,6 +15,9 @@ export class Play {
 
     execute(msg) {
         GuildHandler.getGuild(msg.guild.id, (data) => {
+            if (!data.voiceChannel || !data.logChannel) {
+                return this.chatHandler.sendMessage(msg, "Please configure voice channel first!");
+            }
             this.playlist.play(data, (playing) => {
                 this.chatHandler.sendMessage(msg, playing);
             });

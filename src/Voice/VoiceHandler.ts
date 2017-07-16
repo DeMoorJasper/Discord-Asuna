@@ -36,6 +36,7 @@ export class VoiceHandler {
                     let dispatcher = connection.playStream(stream, streamOptions);
                     dispatcher.once('end', () => {
                         dispatcher.stream = undefined;
+                        console.log("stream ended.");
                         ended();
                     });
                     callback(dispatcher);
