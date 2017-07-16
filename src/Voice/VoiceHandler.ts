@@ -34,12 +34,23 @@ export class VoiceHandler {
             this.joinChannel(channel, (connection) => {
                 if (connection != null) {
                     let dispatcher = connection.playStream(stream, streamOptions);
+                    dispatcher.once('start', () => {
+                        console.log("start streaming!");
+                        callback(dispatcher);
+                    });
                     dispatcher.once('end', () => {
                         dispatcher.stream = undefined;
                         console.log("stream ended.");
                         ended();
                     });
-                    callback(dispatcher);
+                    dispatcher.on('error', (e) => {
+                        console.log("DISPATCHER: Error")
+                        console.log(e);
+                    });
+                    dispatcher.on('debug', (info) => {
+                        console.log("DISPATCHER: Debug")
+                        console.log(info);
+                    });
                     return;
                 }
                 callback(null);
